@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 
 public interface ProductPassiveRepository extends ReactiveMongoRepository<ProductPassive, String> {
-    Mono<ProductPassive> findByIdentityAccount(String account);
+    Mono<ProductPassive> findByIdentityAccount(String identityAccount);
 
 }

@@ -19,7 +19,7 @@ import java.net.URI;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/productpassive")
+@RequestMapping("/v1/productPassive")
 public class ProductPassiveController {
 
     @Value("${spring.application.name}")
@@ -59,8 +59,8 @@ public class ProductPassiveController {
         log.info("create executed {}", request);
         return productPassiveService.create(productPassiveMapper.modelToEntity(request))
                 .map(productPassive -> productPassiveMapper.entityToModel(productPassive))
-                .flatMap(c -> Mono.just(ResponseEntity.created(URI.create(String.format("http://%s:%s/%s/%s", name, port, "productPassive", c.getId())))
-                        .body(c)))
+                .flatMap(p -> Mono.just(ResponseEntity.created(URI.create(String.format("http://%s:%s/%s/%s", name, port, "productPassive", p.getId())))
+                        .body(p)))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
@@ -69,8 +69,8 @@ public class ProductPassiveController {
         log.info("updateById executed {}:{}", id, request);
         return productPassiveService.update(id, productPassiveMapper.modelToEntity(request))
                 .map(productPassive -> productPassiveMapper.entityToModel(productPassive))
-                .flatMap(c -> Mono.just(ResponseEntity.created(URI.create(String.format("http://%s:%s/%s/%s", name, port, "productPassive", c.getId())))
-                        .body(c)))
+                .flatMap(p -> Mono.just(ResponseEntity.created(URI.create(String.format("http://%s:%s/%s/%s", name, port, "productPassive", p.getId())))
+                        .body(p)))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 

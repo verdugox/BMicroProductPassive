@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = {"identityAccount"})
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(value = "productpassive")
+@Document(value = "productPassive")
 public class ProductPassive {
 
     @Id
