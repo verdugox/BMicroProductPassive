@@ -26,17 +26,14 @@ public class ProductPassive {
     @Column(nullable = false, length = 20)
     private String identityAccount;
     @NotEmpty
-    @Indexed(unique = true)
     @Size(min = 8, max = 11)
     @Column(nullable = false, length = 11)
     private String document;
     @NotEmpty
-    @Indexed(unique = true)
     @Size(min = 0, max = 50)
     @Column(nullable = false, length = 50)
     private String typeAccount;
     @NotNull
-    @Indexed(unique = true)
     @DecimalMax("10000000.00") @DecimalMin("0.0")
     @Column(nullable = false, length = 50)
     private Double availableAmount;

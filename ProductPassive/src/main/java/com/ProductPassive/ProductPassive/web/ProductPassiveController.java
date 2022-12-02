@@ -54,6 +54,16 @@ public class ProductPassiveController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/findByIdentityAccount/{identityAccount}")
+    public Mono<ResponseEntity<ProductPassiveModel>> findByIdentityAccount(@PathVariable String identityAccount){
+        log.info("findByIdentityAccount executed {}", identityAccount);
+        Mono<ProductPassive> response = productPassiveService.findByIdentityAccount(identityAccount);
+        return response
+                .map(productPassive -> productPassiveMapper.entityToModel(productPassive))
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public Mono<ResponseEntity<ProductPassiveModel>> create(@Valid @RequestBody ProductPassiveModel request){
         log.info("create executed {}", request);

@@ -71,45 +71,50 @@ public class ProductPassiveService {
         return productPassiveRepository.findById(productPassiveId);
     }
 
+    public Mono<ProductPassive> findByIdentityAccount(String identityAccount){
+        log.debug("findByIdentityAccount executed {}" , identityAccount);
+        return productPassiveRepository.findByIdentityAccount(identityAccount);
+    }
+
+    public Mono<ProductPassive> findByTypeAccountAndDocument(String typeAccount, String document){
+        log.debug("findByTypeAccountAndDocument executed {}" , typeAccount, document);
+        return productPassiveRepository.findByTypeAccountAndDocument(typeAccount, document);
+    }
+
+
     public Mono<ProductPassive> create(ProductPassive productPassive){
         log.debug("create executed {}",productPassive);
 
         Mono<Client> client = findClientByDNI(productPassive.getDocument());
+
         log.debug("findClientByDNI executed {}" , client);
         log.info("findClientByDNI executed {}" , client);
         System.out.println("client " +client);
 
+
         return client.switchIfEmpty(Mono.error(new Exception("Client Not Found" + productPassive.getDocument())))
                 .flatMap(client1 -> {
                     if(client1.getTypeClient().equals("PERSONAL")){
-                        return productPassiveRepository.save(productPassive);
+                        return findByTypeAccountAndDocument(productPassive.getTypeAccount(),productPassive.getDocument())
+                                .flatMap(account1 -> {
+                                    if(account1.getTypeAccount().equals("AHORRO") || account1.getTypeAccount().equals("CORRIENTE")){
+                                        return Mono.error(new Exception("No puede tener más de una cuenta de AHORRO O CORRIENTE" + productPassive.getTypeAccount()));
+                                    }
+                                    else{
+                                        return productPassiveRepository.save(productPassive);
+                                    }
+                                }).switchIfEmpty(productPassiveRepository.save(productPassive));
                     }
-                    else{
-                        return Mono.error(new Exception("Need type client PERSONAL because the type client actually is " + client1.getTypeClient()));
+                    else
+                    {
+                        if(productPassive.getTypeAccount().equals("CORRIENTE")){
+                            return productPassiveRepository.save(productPassive);
+                        }else{
+                            return Mono.error(new Exception("No puede tener una cuenta de AHORRO O PLAZO FIJO" + productPassive.getTypeAccount()));
+                        }
                     }
-                    });
 
-
-        //Valida si no existe, retornar un nuevo cliente.
-        //client.defaultIfEmpty(new Client());
-
-
-               /* client.con(user-> {
-                    if(!isValid(user)){
-                        return Mono.error(new InvalidUserException());
-                    }
-                    return Mono.just(user);
-                })
-*/
-        //
-
-        /*client.map(client1 -> {
-            client1.getFirstName();
-        })*/
-
-
-
-
+                });
 
     }
 
