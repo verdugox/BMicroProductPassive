@@ -1,7 +1,6 @@
 package com.ProductPassive.ProductPassive.web.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProductPassiveModel {
 
-    @JsonIgnore
+
     private String id;
     @NotBlank(message="Account Number cannot be null or empty")
     private String identityAccount;
