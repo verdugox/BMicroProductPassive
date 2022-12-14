@@ -1,11 +1,11 @@
 package com.ProductPassive.ProductPassive.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
