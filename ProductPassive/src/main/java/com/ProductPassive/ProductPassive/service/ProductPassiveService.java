@@ -97,10 +97,15 @@ public class ProductPassiveService {
                     if(client1.getTypeClient().equals("PERSONAL")){
                         return findByTypeAccountAndDocument(productPassive.getTypeAccount(),productPassive.getDocument())
                                 .flatMap(account1 -> {
-                                    if(account1.getTypeAccount().equals("AHORRO") || account1.getTypeAccount().equals("CORRIENTE")){
+                                    if(account1.getTypeAccount().equals("AHORRO") || account1.getTypeAccount().equals("CORRIENTE"))
+                                    {
                                         return Mono.error(new Exception("No puede tener más de una cuenta de AHORRO O CORRIENTE" + productPassive.getTypeAccount()));
+                                    }else if(account1.getTypeAccount().equals("VIP"))
+                                    {
+                                        return Mono.error(new Exception("Cliente debe tener una tarjeta de crédito con el banco al momento de creación de cuenta" + productPassive.getTypeAccount()));
                                     }
-                                    else{
+                                    else
+                                    {
                                         return productPassiveRepository.save(productPassive);
                                     }
                                 }).switchIfEmpty(productPassiveRepository.save(productPassive));
